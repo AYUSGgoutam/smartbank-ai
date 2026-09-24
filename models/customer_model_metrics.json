@@ -1,0 +1,21 @@
+{
+  "risk": {
+    "mae": 5.869719752926894,
+    "r2": 0.6298811855544122
+  },
+  "churn": {
+    "roc_auc": 0.635480977807442,
+    "feature_importance": {
+      "login_frequency": 0.1368476350157523,
+      "monthly_income": 0.132770873673417,
+      "account_age_days": 0.12834924385135904,
+      "average_transaction_amount": 0.12733340970462548,
+      "credit_score": 0.11904398302055764,
+      "age": 0.10720032309635992,
+      "total_transactions": 0.07165361795404836,
+      "failed_transactions": 0.061400697074062406,
+      "customer_service_calls": 0.060662742056686675,
+      "complaints": 0.05473747455313127
+    }
+  }
+}

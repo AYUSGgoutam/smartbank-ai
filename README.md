@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SmartBank AI — Fraud & Risk Intelligence Platform
 
 SmartBank AI is a learning-oriented portfolio project for transaction fraud detection and customer risk analysis. It combines synthetic banking data, classical ML, anomaly detection, sequence learning, SHAP explanations, SQL persistence, a FastAPI service, and a Streamlit dashboard. The generated records are synthetic and are not representative of real banking customers.
@@ -180,3 +181,7 @@ Add dashboard screenshots here after launching the Streamlit app. Suggested view
 ## Limitations and future improvements
 
 The labels, entities and performance are synthetic. The current LSTM inference route accepts one transaction and pads its sequence window by repeating the current row; a production design should fetch prior transactions for that customer. The API currently uses a single local-process model load per request and is not production-hardened. Future work could add real privacy-reviewed datasets, temporal backtesting, threshold tuning by business costs, migrations, authentication, model monitoring, drift checks, CI and deployment automation.
+=======
+# smartbank-ai
+ AI-powered banking fraud detection and risk intelligence platform  
+>>>>>>> c00246b239564bded73760412ca540699d15fa9e

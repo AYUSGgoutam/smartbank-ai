@@ -1,0 +1,11 @@
+{
+  "isolation_forest": {
+    "threshold": 0.6444174715244921,
+    "validation_rows": 20000,
+    "validation_anomaly_fraction": 0.01
+  },
+  "autoencoder": {
+    "validation_threshold": 0.4341283142566681,
+    "validation_normal_rows": 19572
+  }
+}

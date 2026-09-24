@@ -1,0 +1,9 @@
+{
+  "loss": 0.6932781934738159,
+  "pr_auc": 0.02179911732673645,
+  "recall": 1.0,
+  "roc_auc": 0.5,
+  "sequence_length": 10,
+  "validation_sequences": 3624,
+  "validation_customers": 1088
+}
