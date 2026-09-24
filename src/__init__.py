@@ -1,0 +1,1 @@
+"""SmartBank AI application package."""
