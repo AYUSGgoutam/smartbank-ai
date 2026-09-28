@@ -21,6 +21,10 @@ def database_url() -> str:
     configured = os.getenv("DATABASE_URL")
     if configured:
         return configured
+    # Vercel's deployed application bundle is read-only; /tmp is writable but
+    # ephemeral. Set DATABASE_URL to an external database for durable storage.
+    if os.getenv("VERCEL"):
+        return "sqlite:////tmp/smartbank.db"
     Path("data").mkdir(parents=True, exist_ok=True)
     return "sqlite:///./data/smartbank.db"
 

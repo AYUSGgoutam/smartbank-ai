@@ -2,6 +2,15 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+# Streamlit may execute this file with ``frontend/`` as sys.path[0]. Add the
+# repository root so package imports also work when this file is launched directly.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import streamlit as st
 
 from frontend.components.data import filter_data, load_data
