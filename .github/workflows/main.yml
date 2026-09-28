@@ -9,9 +9,13 @@ on:
       - main
 
 jobs:
+
+  # =========================
+  # TEST JOB
+  # =========================
   test:
     name: Test SmartBank AI
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -38,37 +42,49 @@ jobs:
         run: |
           pytest -q
 
+
+  # =========================
+  # DEPLOY JOB - EC2 RUNNER
+  # =========================
   deploy:
-    name: Deploy SmartBank AI
+    name: Deploy SmartBank AI to EC2
     needs: test
+
     runs-on: self-hosted
 
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-      - name: Update application
-        run: |
-          cd ~/smartbank-ai
 
-          git fetch origin main
-          git reset --hard origin/main
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Activate virtual environment
+      - name: Sync project to deployment folder
         run: |
-          cd ~/smartbank-ai
+          sudo mkdir -p /home/ubuntu/smartbank-ai
+          sudo rsync -a --delete \
+            --exclude '.git' \
+            "$GITHUB_WORKSPACE/" \
+            /home/ubuntu/smartbank-ai/
+
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/smartbank-ai
+
+      - name: Check Python
+        run: |
+          cd /home/ubuntu/smartbank-ai
           source venv/bin/activate
           python --version
           pip --version
 
       - name: Install dependencies
         run: |
-          cd ~/smartbank-ai
+          cd /home/ubuntu/smartbank-ai
           source venv/bin/activate
           pip install -r requirements.txt
 
       - name: Check Python files
         run: |
-          cd ~/smartbank-ai
+          cd /home/ubuntu/smartbank-ai
           source venv/bin/activate
           PYTHONPATH=. python -m compileall frontend database src
 
