@@ -11,7 +11,7 @@ on:
 jobs:
   test:
     name: Test SmartBank AI
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -39,25 +39,48 @@ jobs:
           pytest -q
 
   deploy:
-    name: Deploy to AWS EC2
+    name: Deploy SmartBank AI
     needs: test
-    runs-on: ubuntu-latest
-
-    environment: bankai
+    runs-on: self-hosted
 
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd ~/smartbank-ai
-            git pull origin main
-            source venv/bin/activate
-            pip install -r requirements.txt
-            sudo systemctl restart smartbank
-            sudo systemctl status smartbank --no-pager
+      - name: Update application
+        run: |
+          cd ~/smartbank-ai
+
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Activate virtual environment
+        run: |
+          cd ~/smartbank-ai
+          source venv/bin/activate
+          python --version
+          pip --version
+
+      - name: Install dependencies
+        run: |
+          cd ~/smartbank-ai
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Check Python files
+        run: |
+          cd ~/smartbank-ai
+          source venv/bin/activate
+          PYTHONPATH=. python -m compileall frontend database src
+
+      - name: Restart SmartBank service
+        run: |
+          sudo systemctl restart smartbank
+
+      - name: Check SmartBank service
+        run: |
+          sudo systemctl status smartbank --no-pager
+
+      - name: Health check
+        run: |
+          sleep 5
+          curl -f http://127.0.0.1:8501/_stcore/health
